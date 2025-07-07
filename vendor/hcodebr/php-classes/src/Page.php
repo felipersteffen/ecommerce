@@ -24,7 +24,7 @@ class Page {
             "debug"         => false
            );
 
-        Tpl::configure( $config );
+        Tpl::configure($config);
 
         $this->tpl = new Tpl;
 
