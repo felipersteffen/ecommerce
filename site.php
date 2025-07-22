@@ -3,6 +3,7 @@
 use Hcode\Page;
 use Hcode\Model\Category;
 use Hcode\Model\Product;
+use Hcode\Model\User;
 
 $app->get('/', function() {
 	$products = Product::listAll();
@@ -16,6 +17,8 @@ $app->get('/', function() {
 });
 
 $app->get("/categories/:idcategoria", function($idcategory){
+	User::verifyLogin();
+
 	$category = new Category();
 
 	$category->get((int)$idcategory);
@@ -24,7 +27,7 @@ $app->get("/categories/:idcategoria", function($idcategory){
 
 	$page->setTpl("category", array(
 		"category" => $category->getValues(),
-		"products" => []
+		"products" => Product::checkList($category->getProducts())
 	));
 });
 ?>
