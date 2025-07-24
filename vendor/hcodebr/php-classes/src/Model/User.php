@@ -10,6 +10,8 @@ class User extends Model {
 
     const SESSION = "User";
     const SECRET  = "HcodePhp7_Secret";
+    const ERROR = "UserError";
+    const ERROR_REGISTER = "UserErrorRegister";
 
     public static function getFromSession(){
         $user = new User();
@@ -39,7 +41,12 @@ class User extends Model {
         
         $sql = new Sql();
 
-        $results = $sql->select("SELECT * FROM tb_users WHERE deslogin = :LOGIN", array(
+        $results = $sql->select(
+            "SELECT * 
+            FROM tb_users u 
+            INNER JOIN tb_persons p 
+                ON p.idperson = u.idperson
+            WHERE u.deslogin = :LOGIN", array(
             ":LOGIN"=>$login
         ));
 
@@ -65,7 +72,10 @@ class User extends Model {
 
     public static function verifyLogin($inadmin = true){
         if (!User::checkLogin($inadmin)){
-            header("Location: /admin/login");
+            if($inadmin)
+                header("Location: /admin/login");
+            else
+                header("Location: /login");
             exit;
         }
     }
@@ -86,7 +96,7 @@ class User extends Model {
         $results = $sql->select("CALL sp_users_save(:desperson, :deslogin, :despassword, :desemail, :nrphone, :inadmin)", array(
             ":desperson" => $this->getdesperson(),
             ":deslogin" => $this->getdeslogin(),
-            ":despassword" => $this->getdespassword(),
+            ":despassword" => User::getPasswordHash($this->getdespassword()),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
@@ -112,7 +122,7 @@ class User extends Model {
             ":iduser" => $this->getiduser(),
             ":desperson" => $this->getdesperson(),
             ":deslogin" => $this->getdeslogin(),
-            ":despassword" => $this->getdespassword(),
+            ":despassword" => User::getPasswordHash($this->getdespassword()),
             ":desemail" => $this->getdesemail(),
             ":nrphone" => $this->getnrphone(),
             ":inadmin" => $this->getinadmin()
@@ -211,6 +221,28 @@ class User extends Model {
         $sql->query("UPDATE tb_users SET despassword = :password WHERE iduser = :iduser", array(
             ":password" => $password,
             ":iduser" => $this->getiduser()
+        ));
+    }
+
+    public static function setError($msg){
+        $_SESSION[User::ERROR] = $msg;
+    }
+
+    public static function getError(){
+        $msg = !empty($_SESSION[User::ERROR]) ? $_SESSION[User::ERROR] : '';
+
+        User::clearError();
+
+        return $msg;
+    }
+
+    public static function clearError(){
+        $_SESSION[User::ERROR] = NULL;
+    }
+
+    public static function getPasswordHash($password){
+        return password_hash($password, PASSWORD_DEFAULT, array(
+            "cost" => 12
         ));
     }
 
