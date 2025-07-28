@@ -9,6 +9,7 @@ use \Hcode\Model\User;
 class Cart extends Model {
 
     const SESSION = "Cart";
+    const SESSION_ERROR = "CartError";
 
     public static function getFromSession(){
         $cart = new Cart();
@@ -210,6 +211,22 @@ class Cart extends Model {
 
         $this->setvlsubtotal($totals['vlprice'] > 0 ? $totals['vlprice'] : 0);
         $this->setvltotal($totals['vlprice'] + $this->getvlfreight() > 0 ? $totals['vlprice'] + $this->getvlfreight() : 0);
+    }
+
+    public static function setMsgError($msg){
+        $_SESSION[Cart::SESSION_ERROR] = $msg;
+    }
+
+    public static function getMsgError(){
+        $msg = !empty($_SESSION[Cart::SESSION_ERROR]) ? $_SESSION[Cart::SESSION_ERROR] : "";
+
+        Cart::clearMsgError();
+
+        return $msg;
+    }
+
+    public static function clearMsgError(){
+        $_SESSION[Cart::SESSION_ERROR] = NULL;
     }
 }
 ?>
