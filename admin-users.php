@@ -44,11 +44,28 @@ $app->get('/admin/logout', function() {
 $app->get('/admin/users', function(){
 	User::verifyLogin();
 
-	$users = User::listAll();
+	$search = !empty($_GET['search']) ? $_GET['search'] : "";
+	$page = !empty($_GET["page"]) ? (int)$_GET["page"] : 1;
+
+	$pagination = User::getPage($page, $search);
+
+	$pages = [];
+
+	for($x = 0; $x < $pagination["pages"]; $x++){
+		array_push($pages, array(
+			"href" => "/admin/users?" . http_build_query(array(
+				"page" => $x + 1,
+				"search" =>$search
+			)),
+			"text" => $x + 1
+		));
+	}
 
 	$page = new PageAdmin();
 	$page->setTpl("users", array(
-		"users" => $users
+		"users" => $pagination["data"],
+		"search" => $search,
+		"pages" => $pages
 	));
 });
 
