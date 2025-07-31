@@ -206,12 +206,11 @@ $app->post("/checkout", function(){
 	}
 
 	$user = User::getFromSession();
-
+	
 	$address = new Address();
 
 	$_POST["deszipcode"] = $_POST['zipcode'];
 	$_POST["idperson"] = $user->getidperson();
-
 	$address->setData($_POST);
 	$address->save();
 
@@ -224,7 +223,7 @@ $app->post("/checkout", function(){
 		"idaddress" => $address->getidaddress(),
 		"iduser" => $user->getiduser(),
 		"idstatus" => OrderStatus::EM_ABERTO,
-		"vltotal" => $cart->getvltotal()	
+		"vltotal" => (float)$cart->getvltotal()	
 	));
 
 	$order->save();
@@ -257,6 +256,7 @@ $app->post("/login", function(){
 });
 
 $app->get("/logout", function(){
+	Cart::removeFromSession();
 
 	User::logout();
 

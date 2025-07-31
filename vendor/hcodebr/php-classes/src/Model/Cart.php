@@ -38,8 +38,13 @@ class Cart extends Model {
             }
         }
 
+        $cart->getCalculateTotal();
         return $cart;
- 
+
+    }
+
+    public static function removeFromSession(){
+        $_SESSION[Cart::SESSION] = NULL;
     }
 
     public function setToSession(){
@@ -180,7 +185,6 @@ class Cart extends Model {
 
             $xml = simplexml_load_file("http://ws.correios.com.br/calculador/CalcPrecoPrazo.asmx/CalcPrecoPrazo?".$qs);
 
-            var_dump($xml);
             exit;
         }
         */

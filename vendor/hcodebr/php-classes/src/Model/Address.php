@@ -55,7 +55,7 @@ class Address extends Model {
             ":desstate" => $this->getdesstate(),
             ":descountry" => $this->getdescountry(),
             ":deszipcode" => $this->getdeszipcode(),
-            ":desdistrict" => $this->getdesdistrict(),
+            ":desdistrict" => $this->getdesdistrict()
         ));
 
         if(!empty($results))
