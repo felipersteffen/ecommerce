@@ -62,7 +62,7 @@ class User extends Model {
 
             $user->setData($data);
 
-            $_SESSION[User::SESSION] = $user -> getValues();
+            $_SESSION[User::SESSION] = $user->getValues();
 
             return $user;
 
@@ -237,7 +237,7 @@ class User extends Model {
     }
 
     public static function clearError(){
-        $_SESSION[User::SUCESS] = NULL;
+        $_SESSION[User::ERROR] = NULL;
     }
 
     public static function setSucess($msg){
