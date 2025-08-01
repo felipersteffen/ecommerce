@@ -8,12 +8,28 @@ use Hcode\Model\Product;
 $app->get("/admin/categories", function(){
 	User::verifyLogin();
 
-	$categories = Category::listAll();
+	$search = !empty($_GET['search']) ? $_GET['search'] : "";
+	$page = !empty($_GET["page"]) ? (int)$_GET["page"] : 1;
+
+	$pagination = Category::getPage($page, $search);
+
+	$pages = [];
+
+	for($x = 0; $x < $pagination["pages"]; $x++){
+		array_push($pages, array(
+			"href" => "/admin/categories?" . http_build_query(array(
+				"page"   => $x + 1,
+				"search" => $search
+			)),
+			"text" => $x + 1
+		));
+	}
 	
 	$page = new PageAdmin();
-
 	$page->setTpl("categories", array(
-		"categories" => $categories
+		"categories" => $pagination["data"],
+		"search" => $search,
+		"pages" => $pages
 	));
 });
 
