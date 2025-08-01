@@ -122,5 +122,41 @@ class Order extends Model {
     public static function clearSucess(){
         $_SESSION[Order::SUCESS] = NULL;
     }
+
+    public static function getPage($page = 1, $search, $itemsPerPage = 10){
+        $start = ($page - 1) * $itemsPerPage;
+        $sql = new Sql();
+
+        $whereSearch = "";
+        if($search != '')
+            $whereSearch = "WHERE o.idorder = '{$search}' OR p.desperson LIKE '%{$search}%'";
+
+        $results = $sql->select(
+            "SELECT SQL_CALC_FOUND_ROWS * 
+            FROM tb_orders o 
+            INNER JOIN tb_ordersstatus os 
+                ON o.idstatus = os.idstatus 
+            INNER JOIN tb_carts c 
+                ON o.idcart = c.idcart 
+            INNER JOIN tb_users u 
+                ON o.iduser = u.iduser 
+            INNER JOIN tb_addresses a 
+                ON o.idaddress = a.idaddress
+            INNER JOIN tb_persons p 
+                ON u.idperson = p.idperson
+            {$whereSearch}
+            ORDER BY o.dtregister DESC
+            LIMIT {$start}, {$itemsPerPage}"
+        );
+
+        $resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+        return array(
+            "data"  => $results,
+            "total" => (int)$resultTotal[0]["nrtotal"],
+            "pages" => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+        );
+        
+    }
 }
 ?>

@@ -4,41 +4,50 @@ use Hcode\PageAdmin;
 use Hcode\Model\User;
 use Hcode\Model\Category;
 
-$app->get('/admin', function() {
-    
+$app->get("/admin/users/:iduser/password", function($iduser){
 	User::verifyLogin();
 
+	$user = new User();
+	$user->get((int)$iduser);
+
 	$page = new PageAdmin();
-
-	$page->setTpl("index");
-
+	$page->setTpl("users-password", array(
+		"user" => $user->getValues(),
+		"msgError" => User::getError(),
+		"msgSuccess" => User::getSucess()
+	));
 });
 
-$app->get('/admin/login', function() {
-    
-	$page = new PageAdmin([
-		"header"=> false,
-		"footer"=> false
-	]);
+$app->post("/admin/users/:iduser/password", function($iduser){
+	User::verifyLogin();
 
-	$page->setTpl("login");
+	if(empty($_POST["despassword"])){
+		User::setError("Informe a nova senha.");
+		header("Location: /admin/users/{$iduser}/password");
+		exit;
+	}
 
-});
+	if(empty($_POST["despassword-confirm"])){
+		User::setError("Confirme a nova senha.");
+		header("Location: /admin/users/{$iduser}/password");
+		exit;
+	}
 
-$app->post('/admin/login', function() {
-    
-	User::login($_POST["login"], $_POST["password"]);
+	if($_POST["despassword-confirm"] !== $_POST["despassword"]){
+		User::setError("A senha e confirmação estão diferentes.");
+		header("Location: /admin/users/{$iduser}/password");
+		exit;
+	}
 
-	header("Location: /admin");
+	$user = new User();
+	$user->get((int)$iduser);
+
+	$user->setPassword(User::getPasswordHash($_POST["despassword"]));
+
+	User::setSucess("Senha alterada com sucesso.");
+
+	header("Location: /admin/users/{$iduser}/password");
 	exit;
-});
-
-$app->get('/admin/logout', function() {
-    User::logout();
-
-	header("Location: /admin/login");
-	exit;
-
 });
 
 $app->get('/admin/users', function(){
