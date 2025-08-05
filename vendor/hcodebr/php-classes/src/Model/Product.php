@@ -13,6 +13,21 @@ class Product extends Model {
         return $sql->select("SELECT * FROM tb_products ORDER BY desproduct");
     }
 
+    public static function listAllSlider(){
+        $sql = new Sql();
+
+        return $sql->select(
+            "SELECT DISTINCT p.*
+            FROM tb_products p
+            LEFT JOIN tb_cartsproducts cp
+                ON cp.idproduct = p.idproduct
+            LEFT JOIN tb_orders o
+                ON o.idcart = cp.idcart
+            ORDER BY o.dtregister DESC
+            LIMIT 5"
+        );
+    }
+
     public static function checkList($list){
         foreach($list as &$row){
             $p = new Product();
@@ -152,6 +167,38 @@ class Product extends Model {
             FROM tb_products
             {$whereSearch}
             ORDER BY desproduct
+            LIMIT {$start}, {$itemsPerPage}"
+        );
+
+        $resultTotal = $sql->select("SELECT FOUND_ROWS() AS nrtotal");
+
+        return array(
+            "data"  => $results,
+            "total" => (int)$resultTotal[0]["nrtotal"],
+            "pages" => ceil($resultTotal[0]["nrtotal"] / $itemsPerPage)
+        );
+        
+    }
+
+    public static function getPageSite($page = 1, $search, $itemsPerPage = 5){
+        $start = ($page - 1) * $itemsPerPage;
+        $sql = new Sql();
+
+        $whereSearch = "";
+        if($search != '')
+            $whereSearch = "WHERE p.desproduct LIKE '%{$search}%'";
+
+        $results = $sql->select(
+            "SELECT SQL_CALC_FOUND_ROWS 
+                p.*,
+                (SELECT GROUP_CONCAT(c.descategory)
+                    FROM tb_categories c
+                    INNER JOIN tb_productscategories pc
+                        ON pc.idcategory = c.idcategory
+                    WHERE pc.idproduct = p.idproduct) AS categories
+            FROM tb_products p
+            {$whereSearch}
+            ORDER BY p.desproduct
             LIMIT {$start}, {$itemsPerPage}"
         );
 

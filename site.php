@@ -11,11 +11,13 @@ use Hcode\Model\OrderStatus;
 
 $app->get('/', function() {
 	$products = Product::listAll();
+	$productsSlider = Product::listAllSlider();
 
 	$page = new Page();
 
 	$page->setTpl("index", [
-		'products' => Product::checkList($products)
+		'products' => Product::checkList($products),
+		'productsSlider' => Product::checkList($productsSlider)
 	]);
 
 });
@@ -55,6 +57,34 @@ $app->get("/products/:desurl", function($desurl){
 	$page->setTpl("product-detail", array(
 		"product" => $product->getValues(),
 		"categories" => $product->getCategories()
+	));
+});
+
+$app->get("/products", function(){
+	$search = !empty($_GET['search']) ? $_GET['search'] : "";
+	$nrpage = !empty($_GET["page"]) ? (int)$_GET["page"] : 1;
+
+	$pagination = Product::getPageSite($nrpage, $search);
+
+	$pages = [];
+
+	for($x = 0; $x < $pagination["pages"]; $x++){
+		array_push($pages, array(
+			"href" => "/products?" . http_build_query(array(
+				"page"   => $x + 1,
+				"search" => $search
+			)),
+			"text" => $x + 1
+		));
+	}
+
+	$page = new Page();
+
+	$page->setTpl("product-search", array(
+		"products" => Product::checkList($pagination["data"]),
+		"search" => $search,
+		"pages" => $pages,
+		"activePage" => $nrpage
 	));
 });
 

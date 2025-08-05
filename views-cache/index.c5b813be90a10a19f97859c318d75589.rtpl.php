@@ -1,48 +1,45 @@
-<?php if(!class_exists('Rain\Tpl')){exit;}?><div class="slider-area">
-    <!-- Slider -->
-    <div class="block-slider block-slider4">
-        <ul class="" id="bxslider-home4">
-            <li>
-                <img src="/res/site/img/h4-slide.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        iPhone <span class="primary">6 <strong>Plus</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Dual SIM</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Comprar</a>
+<?php if(!class_exists('Rain\Tpl')){exit;}?>
+    <div class="row">
+        <div class="container">
+            <form action="/products" class="d-flex" role="search">
+                <div class="input-group input-group pb-3 pt-3" style="width: 100%;">
+                    <input type="search" name="search" class="form-control" placeholder="Search" value="">
+                    <button type="submit" class="btn btn-outline" style="width: 5%;"><i class="fa fa-search"></i></button>
                 </div>
-            </li>
-            <li><img src="/res/site/img/h4-slide2.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        by one, get one <span class="primary">50% <strong>off</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">school supplies & backpacks.*</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Comprar</a>
-                </div>
-            </li>
-            <li><img src="/res/site/img/h4-slide3.png" alt="Slide">
-                <div class="caption-group">
-                    <h2 class="caption title">
-                        Apple <span class="primary">Store <strong>Ipod</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">Select Item</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Comprar</a>
-                </div>
-            </li>
-            <li><img src="/res/site/img/h4-slide4.png" alt="Slide">
-                <div class="caption-group">
-                  <h2 class="caption title">
-                        Apple <span class="primary">Store <strong>Ipod</strong></span>
-                    </h2>
-                    <h4 class="caption subtitle">& Phone</h4>
-                    <a class="caption button-radius" href="#"><span class="icon"></span>Comprar</a>
-                </div>
-            </li>
-        </ul>
+            </form>
+        </div>
     </div>
-    <!-- ./Slider -->
-</div> <!-- End slider area -->
+
+    <!-- Slider -->
+    <div class="row">
+        <div id="carouselExampleAutoplaying" class="carousel carousel-dark slide" data-bs-ride="carousel">
+            <div class="carousel-inner">
+                <?php $counter1=-1;  if( isset($productsSlider) && ( is_array($productsSlider) || $productsSlider instanceof Traversable ) && sizeof($productsSlider) ) foreach( $productsSlider as $key1 => $value1 ){ $counter1++; ?>
+                <?php if( $key1 == 0 ){ ?>
+                <div class="carousel-item active">
+                <?php }else{ ?>
+                <div class="carousel-item">
+                <?php } ?>
+                    <img src="<?php echo htmlspecialchars( $value1["desphoto"], ENT_COMPAT, 'UTF-8', FALSE ); ?>" class="rounded mx-auto d-block w-50" alt="Product">
+                    <div class="d-none d-md-block" style="text-align: center;">
+                        <h4><strong><?php echo htmlspecialchars( $value1["desproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?></strong></h4>
+                        <h5>Descrição (Não tem ainda)</h5>
+                        <a class="caption button-radius" href="/cart/<?php echo htmlspecialchars( $value1["idproduct"], ENT_COMPAT, 'UTF-8', FALSE ); ?>/add"><span class="icon"></span>Comprar</a>
+                    </div>
+                </div>
+                <?php } ?>
+            </div>
+            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+    </div>
+    </div>
 
 <div class="promo-area">
 <div class="zigzag-bottom"></div>
