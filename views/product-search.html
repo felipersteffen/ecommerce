@@ -1,47 +1,47 @@
-<div class="row">
-        <div class="container">
-            <form action="/products" class="d-flex" role="search">
-                <div class="input-group input-group pb-3 pt-3" style="width: 100%;">
-                    <input type="search" name="search" class="form-control" placeholder="Search" value="{$search}">
-                    <button type="submit" class="btn btn-outline" style="width: 5%;"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
+<div class="container">
+    <div class="row">
+        <form action="/products" class="d-flex" role="search">
+            <div class="input-group input-group pb-3 pt-3" style="width: 100%;">
+                <input type="search" name="search" class="form-control" placeholder="Search" value="{$search}">
+                <button type="submit" class="btn btn-outline" style="width: 5%;"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
+    </div>
 </div>
 
-<div class="row row-cols-1 row-cols-md-4 g-4">
-    {loop="$products"}
-    <div class="col">
-        <div class="card border-dark h-100">
-            <img src="{$value.desphoto}" class="card-img-top img-thumbnail" alt="">
-            <div class="card-body">
-                <h5 class="card-title">{$value.desproduct}</h5>
-                <h6 class="card-subtitle mb-2 text-body-secondary">Categories: {$value.categories}</h6>
-                <a class="btn btn-dark" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/cart/{$value.idproduct}/add">Comprar</a>
+<div class="container">
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {loop="$products"}
+        <div class="col">
+            <div class="card border-dark h-100">
+                <img src="{$value.desphoto}" class="card-img-top img-thumbnail" alt="">
+                <div class="card-body">
+                    <h6 class="card-title"><strong>{$value.desproduct}</strong></h6>
+                    <p class="card-subtitle mb-2 text-body-secondary">Categories: {$value.categories}</p>
+                    <a class="btn btn-dark" data-quantity="1" data-product_sku="" data-product_id="70" rel="nofollow" href="/cart/{$value.idproduct}/add">Comprar</a>
+                </div>
+            </div>
+        </div>
+        {/loop}
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="product-pagination text-center">
+                <nav>
+                    <ul class="pagination justify-content-center mt-4">
+                    {loop="$pages"}
+                    {if="$activePage == $value.text"}
+                    <li class="page-item active">
+                    {else}
+                    <li class="page-item">
+                    {/if}
+                        <a class="page-link" href="{$value.href}">{$value.text}</a>
+                    </li>
+                    {/loop}
+                    </ul>
+                </nav>                        
             </div>
         </div>
     </div>
-    {/loop}
-</div>
-
-<div class="row">
-    <div class="col-md-12">
-        <div class="product-pagination text-center">
-            <nav>
-                <ul class="pagination justify-content-center">
-                {loop="$pages"}
-                {if="$activePage == $value.text"}
-                <li class="page-item active">
-                {else}
-                <li class="page-item">
-                {/if}
-                    <a class="page-link" href="{$value.href}">{$value.text}</a>
-                </li>
-                {/loop}
-                </ul>
-            </nav>                        
-        </div>
-    </div>
-</div>
-    
 </div>

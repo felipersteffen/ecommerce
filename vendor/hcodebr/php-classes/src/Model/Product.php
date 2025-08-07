@@ -180,7 +180,7 @@ class Product extends Model {
         
     }
 
-    public static function getPageSite($page = 1, $search, $itemsPerPage = 5){
+    public static function getPageSite($page = 1, $search, $itemsPerPage = 20){
         $start = ($page - 1) * $itemsPerPage;
         $sql = new Sql();
 

@@ -1,16 +1,16 @@
-
+<div class="container">
     <div class="row">
-        <div class="container">
-            <form action="/products" class="d-flex" role="search">
-                <div class="input-group input-group pb-3 pt-3" style="width: 100%;">
-                    <input type="search" name="search" class="form-control" placeholder="Search" value="">
-                    <button type="submit" class="btn btn-outline" style="width: 5%;"><i class="fa fa-search"></i></button>
-                </div>
-            </form>
-        </div>
+        <form action="/products" class="d-flex" role="search">
+            <div class="input-group input-group-lg pb-3 pt-3" style="width: 100%;">
+                <input type="search" name="search" class="form-control border border-dark" placeholder="Qual produto deseja hoje?" value="">
+                <button type="submit" class="btn btn-dark" style="width: 5%;"><i class="fa fa-search"></i></button>
+            </div>
+        </form>
     </div>
+</div>
 
     <!-- Slider -->
+<div class="container">
     <div class="row">
         <div id="carouselExampleAutoplaying" class="carousel carousel-dark slide" data-bs-ride="carousel">
             <div class="carousel-inner">
@@ -28,18 +28,19 @@
                     </div>
                 </div>
                 {/loop}
+                </div>
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                </button>
             </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="prev">
-                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleAutoplaying" data-bs-slide="next">
-                <span class="carousel-control-next-icon" aria-hidden="true"></span>
-                <span class="visually-hidden">Next</span>
-            </button>
         </div>
     </div>
-    </div>
+</div>
 
 <div class="promo-area">
 <div class="zigzag-bottom"></div>

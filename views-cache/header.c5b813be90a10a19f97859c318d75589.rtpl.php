@@ -37,29 +37,29 @@
   <body>
    
     <div class="header-area">
-        <div class="container">
+        <div class="container-fluid">
             <div class="row">
-                <div class="col-md-8">
-                    <div class="user-menu">
-                        <ul>
-                            <li><a class="button-radius" href="/profile"><i class="fa fa-user"></i> Minha Conta</a></li>
-                            <li><a class="button-radius" href="#"><i class="fa fa-heart"></i> Lista de Desejos</a></li>
-                            <li><a class="button-radius" href="/cart"><i class="fa fa-shopping-cart"></i> Meu Carrinho</a></li>
+                <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ms-3">
+                            <li><a class="nav-link" href="/profile"><i class="fa fa-user"></i> Minha Conta</a></li>
+                            <li><a class="nav-link" href="#"><i class="fa fa-heart"></i> Lista de Desejos</a></li>
+                            <li><a class="nav-link" href="/cart"><i class="fa fa-shopping-cart"></i> Meu Carrinho</a></li>
                             <?php if( checkLogin(false) ){ ?>
-                            <li><a class="button-radius" href="/profile"><i class="fa fa-user"></i> <?php echo getUserName(); ?></a></li>
-                            <li><a class="button-radius" href="/logout"><i class="fa fa-close"></i> Sair</a></li>
+                            <li><a class="nav-link" href="/profile"><i class="fa fa-user"></i> <?php echo getUserName(); ?></a></li>
+                            <li><a class="nav-link" href="/logout"><i class="fa fa-close"></i> Sair</a></li>
                             <?php }else{ ?>
-                            <li><a class="button-radius" href="/login"><i class="fa fa-lock"></i> Login</a></li>
+                            <li><a class="nav-link" href="/login"><i class="fa fa-lock"></i> Login</a></li>
                             <?php } ?>
                         </ul>
                     </div>
-                </div>
+                </nav>
             </div>
         </div>
     </div> <!-- End header area -->
     
-    <div class="site-branding-area">
-        <div class="container">
+    <div class="bg-dark">
+        <div class="container-fluid">
             <div class="row">
                 <div class="col-sm-6">
                     <div class="logo">
@@ -69,7 +69,7 @@
                 
                 <div class="col-sm-6">
                     <div class="shopping-item">
-                        <a href="/cart">Carrinho - <span class="cart-amunt">R$ <?php echo getCartvlSubTotal(); ?></span> 
+                        <a class="btn" href="/cart">Carrinho - <span class="cart-amunt">R$ <?php echo getCartvlSubTotal(); ?></span> 
                         <i class="fa fa-shopping-cart"></i> <span class="product-count"><?php echo getCartNrQdt(); ?></span></a>
                     </div>
                 </div>
@@ -78,7 +78,7 @@
     </div> <!-- End site branding area -->
     
     
-    <div class="container">
+    <div class="container-fluid">
         <div class="row">
             <nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
@@ -86,8 +86,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="/">Home</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="/products">Products</a>
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Categorias
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <?php $counter1=-1;  if( isset($categories) && ( is_array($categories) || $categories instanceof Traversable ) && sizeof($categories) ) foreach( $categories as $key1 => $value1 ){ $counter1++; ?>
+                                <a class="dropdown-item" href="/categories/<?php echo htmlspecialchars( $value1["idcategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?>"><?php echo htmlspecialchars( $value1["descategory"], ENT_COMPAT, 'UTF-8', FALSE ); ?></a>
+                                <?php } ?>
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="/cart">Carrinho</a>
@@ -96,3 +103,4 @@
                 </div>
             </nav>
         </div>
+    </div>

@@ -1,6 +1,7 @@
 <?php
 use Hcode\Model\User;
 use Hcode\Model\Cart;
+use Hcode\Model\Category;
 
 function formatPrice($vlprice){
     if(empty($vlprice)) 
